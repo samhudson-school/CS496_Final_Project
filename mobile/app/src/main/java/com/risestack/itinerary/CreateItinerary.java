@@ -107,6 +107,10 @@ public class CreateItinerary extends Activity {
                     int duration = Toast.LENGTH_SHORT;
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
+                    Intent intent = new Intent(context, ViewItineraries.class);
+                    intent.putExtra("sub", responseData.optString("owner", null));
+
+                    context.startActivity(intent);
                 }
             }
         }.execute();

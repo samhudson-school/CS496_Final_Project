@@ -17,6 +17,10 @@
     <string name="textEntry_duration_of_stay">duration_of_stay</string>
     <string name="textEntry_submit">Submit</string>
 
+    <!-- Update Itinerary -->
+    <string name="textEntry_update">Update</string>
+    <string name="textEntry_delete">Delete</string>
+
     <!-- tools -->
     <string name="tools_given_name">Some FirstName</string>
     <string name="tools_family_name">LastName</string>

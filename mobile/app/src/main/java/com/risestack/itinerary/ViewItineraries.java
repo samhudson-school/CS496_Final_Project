@@ -34,7 +34,7 @@ import static com.risestack.itinerary.MainApplication.JSON;
 import static com.risestack.itinerary.MainApplication.LOG_TAG;
 import static com.risestack.itinerary.MainApplication.URL;
 
-public class ViewItineraries extends Activity implements View.OnClickListener{
+public class ViewItineraries extends Activity{
     public String sub_key;
 
     @Override
@@ -42,20 +42,22 @@ public class ViewItineraries extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_itineraries);
 
+        Intent intent = getIntent();
+        if(intent.hasExtra("sub")) {
+            if (savedInstanceState == null) {
+                Bundle extras = intent.getExtras();
+                sub_key = extras.getString("sub");
+            } else {
+                sub_key = (String) savedInstanceState.getSerializable("sub");
+            }
+            Log.i("Subkey", sub_key);
 
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            sub_key = extras.getString("sub");
-        } else {
-            sub_key = (String) savedInstanceState.getSerializable("sub");
-        }
-        Log.i("Subkey", sub_key);
-
-        //get_data
-        try {
-            get("itineraries/" + sub_key);
-        } catch (IOException e) {
-            e.printStackTrace();
+            //get_data
+            try {
+                get("itineraries/" + sub_key);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
 
@@ -65,7 +67,6 @@ public class ViewItineraries extends Activity implements View.OnClickListener{
     public void get(String handle) throws IOException {
 
         final String final_url = URL + handle;
-        final Context context = getApplicationContext();
         new AsyncTask<String, Void, JSONArray>() {
             @Override
             protected JSONArray doInBackground(String... elements) {
@@ -98,27 +99,16 @@ public class ViewItineraries extends Activity implements View.OnClickListener{
     }
 
     public void update_ui(JSONArray data) throws JSONException {
+        final Context context = getApplicationContext();
         TableLayout itinerary_table = findViewById(R.id.itinerary_table);
         TableRow headings = new TableRow(this);
 
         TextView h1 = new TextView(this);
-        h1.setText("Activity");
+        h1.setText("Activity         ");
         headings.addView(h1);
 
-        TextView h2 = new TextView(this);
-        h2.setText("Street");
-        headings.addView(h2);
-
-        TextView h3 = new TextView(this);
-        h3.setText("City");
-        headings.addView(h3);
-
-        TextView h4 = new TextView(this);
-        h4.setText("Zip");
-        headings.addView(h4);
-
         TextView h5 = new TextView(this);
-        h5.setText("Duration");
+        h5.setText("Duration         ");
         headings.addView(h5);
 
         TextView h6 = new TextView(this);
@@ -138,9 +128,6 @@ public class ViewItineraries extends Activity implements View.OnClickListener{
             JSONObject dataObject = data.getJSONObject(i);
             String id = dataObject.optString("id");
             String name = dataObject.optString("name");
-            String street = dataObject.optString("street");
-            String city = dataObject.optString("city");
-            String zip = dataObject.optString("zip");
             String duration_of_stay = dataObject.optString("duration_of_stay");
 
             TableRow row = new TableRow(this);
@@ -152,22 +139,6 @@ public class ViewItineraries extends Activity implements View.OnClickListener{
             row.addView(c1);
 
 
-            TextView c2 = new TextView(this);
-            c2.setText(street);
-            c2.setGravity(Gravity.CENTER);
-            row.addView(c2);
-
-
-            TextView c3 = new TextView(this);
-            c3.setText(city);
-            c3.setGravity(Gravity.CENTER);
-            row.addView(c3);
-
-
-            TextView c4 = new TextView(this);
-            c4.setText(zip);
-            c4.setGravity(Gravity.CENTER);
-            row.addView(c4);
 
 
             TextView c5 = new TextView(this);
@@ -181,23 +152,18 @@ public class ViewItineraries extends Activity implements View.OnClickListener{
             c6.setText("Update");
             c6.setGravity(Gravity.CENTER);
             row.addView(c6);
-
+            c6.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    String id = (String) view.getTag();
+                    Intent intent = new Intent(context, UpdateItinerary.class);
+                    intent.putExtra("id", id);
+                    context.startActivity(intent);
+                }
+            });
             itinerary_table.addView(row);
 
             }
         }
 
-
-    @Override
-    public void onClick(View view) {
-
-        String id = (String) view.getTag();
-        Intent intent = new Intent(this, UpdateItinerary.class);
-        intent.putExtra("id", id);
-
-        this.startActivity(intent);
-
-
-    }
 }
 

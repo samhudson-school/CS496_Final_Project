@@ -3,6 +3,7 @@ package com.risestack.itinerary;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import static com.risestack.itinerary.MainApplication.URL;
 
 public class UpdateItinerary extends Activity {
     public String id;
+    public String sub;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +38,10 @@ public class UpdateItinerary extends Activity {
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            id= extras.getString("sub");
+            id= extras.getString("id");
         } else {
-            id= (String) savedInstanceState.getSerializable("sub");
+            id= (String) savedInstanceState.getSerializable("id");
         }
-        Log.i("Itinerary_ID",id);
 
         try {
             get("itinerary/"+id);
@@ -53,51 +54,12 @@ public class UpdateItinerary extends Activity {
     public void get(String handle) throws IOException {
 
         final String final_url = URL + handle;
-        final Context context = getApplicationContext();
-        new AsyncTask<String, Void, JSONArray>() {
-            @Override
-            protected JSONArray doInBackground(String... elements) {
-                OkHttpClient client = new OkHttpClient();
-                Request request = new Request.Builder()
-                        .url(final_url)
-                        .build();
-
-                try {
-                    Response response = client.newCall(request).execute();
-                    String jsonBody = response.body().string();
-                    Log.i(LOG_TAG, String.format("API Response %s", jsonBody));
-                    return new JSONArray(jsonBody);
-                } catch (Exception exception) {
-                    Log.w(LOG_TAG, exception);
-                }
-                return null;
-            }
-
-            protected void onPostExecute(JSONArray responseData) {
-                if (responseData != null) {
-                    try {
-                        update_ui(responseData);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }.execute();
-    }
-    @SuppressLint("StaticFieldLeak")
-    public void post(String handle, String json) throws IOException {
-
-        final String final_url = URL+handle;
-        final String final_json = json;
-        final Context context = getApplicationContext();
         new AsyncTask<String, Void, JSONObject>() {
             @Override
             protected JSONObject doInBackground(String... elements) {
                 OkHttpClient client = new OkHttpClient();
-                RequestBody body = RequestBody.create(JSON, final_json);
                 Request request = new Request.Builder()
                         .url(final_url)
-                        .post(body)
                         .build();
 
                 try {
@@ -111,37 +73,137 @@ public class UpdateItinerary extends Activity {
                 return null;
             }
 
-            @Override
             protected void onPostExecute(JSONObject responseData) {
                 if (responseData != null) {
-
-                    CharSequence text = responseData.optString("name", null)+" has been added to your Itinerary";
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
+                    try {
+                        update_ui(responseData);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }.execute();
     }
-    public void update_itinerary(View button) throws JSONException, IOException {
+    @SuppressLint("StaticFieldLeak")
+    public void patch(String handle, String json) throws IOException {
 
+        final String final_url = URL+handle;
+        final String final_json = json;
+        new AsyncTask<String, Void, JSONObject>() {
+            @Override
+            protected JSONObject doInBackground(String... elements) {
+                OkHttpClient client = new OkHttpClient();
+                RequestBody body = RequestBody.create(JSON, final_json);
+                Request request = new Request.Builder()
+                        .url(final_url)
+                        .patch(body)
+                        .build();
+
+                try {
+                    Response response = client.newCall(request).execute();
+                    if(response.code()!=200) {
+                        Log.w(LOG_TAG, "Error");
+                    }
+                } catch (Exception exception) {
+                    Log.w(LOG_TAG, exception);
+                }
+                return null;
+            }
+
+        }.execute();
+    }
+    @SuppressLint("StaticFieldLeak")
+    public void delete(String handle) throws IOException {
+
+        final String final_url = URL+handle;
+        new AsyncTask<String, Void, JSONObject>() {
+            @Override
+            protected JSONObject doInBackground(String... elements) {
+                OkHttpClient client = new OkHttpClient();
+                Request request = new Request.Builder()
+                        .url(final_url)
+                        .delete()
+                        .build();
+
+                try {
+                    Response response = client.newCall(request).execute();
+                    if(response.code()!=200) {
+                        Log.w(LOG_TAG, "Error");
+                    }
+                } catch (Exception exception) {
+                    Log.w(LOG_TAG, exception);
+                }
+                return null;
+            }
+
+        }.execute();
+    }
+    public void update_itinerary(View button) throws JSONException, IOException {
+        //look textEntry fields
+        EditText textEntry_name = (EditText) findViewById(R.id.textEntry_name);
+        EditText textEntry_street = (EditText) findViewById(R.id.textEntry_street);
+        EditText textEntry_city  = (EditText) findViewById(R.id.textEntry_city);
+        EditText textEntry_zip = (EditText) findViewById(R.id.textEntry_zip);
+        EditText textEntry_duration_of_stay = (EditText) findViewById(R.id.textEntry_duration_of_stay);
 
         //creates JSON object
         JSONObject joItinerary = new JSONObject();
-        joItinerary.put("owner",sub_key);
         joItinerary.put("name",textEntry_name.getText().toString());
         joItinerary.put("street",textEntry_street.getText().toString());
         joItinerary.put("city",textEntry_city.getText().toString());
         joItinerary.put("zip",textEntry_zip.getText().toString());
         joItinerary.put("duration_of_stay",textEntry_duration_of_stay.getText().toString());
         //posts data
-        post("itinerary",joItinerary.toString());
+        patch("itinerary/"+this.id,joItinerary.toString());
 
+        CharSequence text = "Itinerary updated!";
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(this, text, duration);
+        toast.show();
+
+        Intent intent = new Intent(UpdateItinerary.this, ViewItineraries.class);
+        intent.putExtra("sub", this.sub);
+        UpdateItinerary.this.startActivity(intent);
+
+    }
+    public void delete_itinerary(View button) throws JSONException, IOException {
+        //posts data
+        delete("itinerary/"+this.id);
+
+        CharSequence text = "Itinerary deleted!";
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(this, text, duration);
+        toast.show();
+        Intent intent = new Intent(UpdateItinerary.this, ViewItineraries.class);
+        intent.putExtra("sub", this.sub);
+
+        UpdateItinerary.this.startActivity(intent);
 
     }
 
 
-    public void update_ui(JSONArray data) throws JSONException {
+    public void update_ui(JSONObject data) throws JSONException {
+        //look textEntry fields
+        EditText textEntry_name = (EditText) findViewById(R.id.textEntry_name);
+        EditText textEntry_street = (EditText) findViewById(R.id.textEntry_street);
+        EditText textEntry_city  = (EditText) findViewById(R.id.textEntry_city);
+        EditText textEntry_zip = (EditText) findViewById(R.id.textEntry_zip);
+        EditText textEntry_duration_of_stay = (EditText) findViewById(R.id.textEntry_duration_of_stay);
+
+        JSONObject dataObject = data;
+        this.sub = dataObject.optString("owner");
+        String name = dataObject.optString("name");
+        String street = dataObject.optString("street");
+        String city = dataObject.optString("city");
+        String zip = dataObject.optString("zip");
+        String duration_of_stay = dataObject.optString("duration_of_stay");
+
+        textEntry_name.setText(name);
+        textEntry_street.setText(street);
+        textEntry_city.setText(city);
+        textEntry_zip.setText(zip);
+        textEntry_duration_of_stay.setText(duration_of_stay);
+
 
 
     }

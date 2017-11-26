@@ -53,7 +53,7 @@ class ItineraryHandler(webapp2.RequestHandler):
             i = ndb.Key(urlsafe=id).get()
             itinerary_data = json.loads(self.request.body)
             for key in itinerary_data:
-                setattr(b, key, itinerary_data[key])
+                setattr(i, key, itinerary_data[key])
             i.put()
 
 class ItinerariesHandler(webapp2.RequestHandler):
