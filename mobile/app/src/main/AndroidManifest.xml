@@ -38,7 +38,8 @@
         <activity
             android:name=".ViewItineraries"
             android:label="@string/title_activity_view_itineraries"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UpdateItinerary"></activity>
     </application>
 
 </manifest>

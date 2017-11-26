@@ -1,61 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:id="@+id/CreateItinerary">
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name"/>
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="@color/colorDivider"
-        android:layout_below="@+id/title"
-        />
-    <EditText
-        android:id="@+id/textEntry_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/divider"
-        android:hint="@string/textEntry_name" />
-    <EditText
-        android:id="@+id/textEntry_street"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textEntry_name"
-        android:hint="@string/textEntry_street" />
-    <EditText
-        android:id="@+id/textEntry_city"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textEntry_street"
-        android:hint="@string/textEntry_city" />
-    <EditText
-        android:id="@+id/textEntry_zip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textEntry_city"
-        android:hint="@string/textEntry_zip" />
-    <EditText
-        android:id="@+id/textEntry_duration_of_stay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textEntry_zip"
-        android:hint="@string/textEntry_duration_of_stay" />
-    <Button
-        android:id="@+id/submitButton"
-        android:onClick="submit_itinerary"
-        android:layout_width="96dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textEntry_duration_of_stay"
-        android:layout_alignParentRight="true"
-        android:text="@string/textEntry_submit" />
+    tools:context="com.risestack.itinerary.CreateItinerary">
 
 
 
-</RelativeLayout>
+    <include layout="@layout/content_create_itinerary" />
+
+
+
+</android.support.design.widget.CoordinatorLayout>

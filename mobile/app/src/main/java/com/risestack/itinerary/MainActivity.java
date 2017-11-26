@@ -268,6 +268,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(mMainActivity, ViewItineraries.class);
+            intent.putExtra("sub", mMainActivity.USER_SUB_KEY);
+
             mMainActivity.startActivity(intent);
         }
     }
