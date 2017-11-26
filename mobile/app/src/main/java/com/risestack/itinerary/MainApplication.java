@@ -26,7 +26,7 @@ public class MainApplication extends Application {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     //current endpoint
-    public static final String URL = DEBUG_URL;
+    public static final String URL = PROD_URL;
 
     @Override
     public void onCreate() {
