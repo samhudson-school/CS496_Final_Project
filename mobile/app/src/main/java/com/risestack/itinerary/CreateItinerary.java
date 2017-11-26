@@ -109,7 +109,8 @@ public class CreateItinerary extends Activity {
                     toast.show();
                     Intent intent = new Intent(context, ViewItineraries.class);
                     intent.putExtra("sub", responseData.optString("owner", null));
-
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    finish();
                     context.startActivity(intent);
                 }
             }

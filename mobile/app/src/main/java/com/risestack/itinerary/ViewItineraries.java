@@ -36,20 +36,18 @@ import static com.risestack.itinerary.MainApplication.URL;
 
 public class ViewItineraries extends Activity{
     public String sub_key;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(null);
         setContentView(R.layout.activity_view_itineraries);
+
 
         Intent intent = getIntent();
         if(intent.hasExtra("sub")) {
-            if (savedInstanceState == null) {
-                Bundle extras = intent.getExtras();
-                sub_key = extras.getString("sub");
-            } else {
-                sub_key = (String) savedInstanceState.getSerializable("sub");
-            }
+
+            Bundle extras = intent.getExtras();
+            sub_key = extras.getString("sub");
+
             Log.i("Subkey", sub_key);
 
             //get_data

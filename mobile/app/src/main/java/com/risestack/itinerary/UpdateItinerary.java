@@ -72,7 +72,7 @@ public class UpdateItinerary extends Activity {
                 }
                 return null;
             }
-
+            @Override
             protected void onPostExecute(JSONObject responseData) {
                 if (responseData != null) {
                     try {
@@ -89,6 +89,8 @@ public class UpdateItinerary extends Activity {
 
         final String final_url = URL+handle;
         final String final_json = json;
+        final String final_sub = sub;
+        final Context context = getApplicationContext();
         new AsyncTask<String, Void, JSONObject>() {
             @Override
             protected JSONObject doInBackground(String... elements) {
@@ -109,6 +111,18 @@ public class UpdateItinerary extends Activity {
                 }
                 return null;
             }
+            @Override
+            protected void onPostExecute(JSONObject responseData) {
+                CharSequence text = "Itinerary updated!";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+                Intent intent = new Intent(UpdateItinerary.this, ViewItineraries.class);
+                intent.putExtra("sub", final_sub);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                finish();
+                UpdateItinerary.this.startActivity(intent);
+            }
 
         }.execute();
     }
@@ -116,6 +130,8 @@ public class UpdateItinerary extends Activity {
     public void delete(String handle) throws IOException {
 
         final String final_url = URL+handle;
+        final String final_sub = sub;
+        final Context context = getApplicationContext();
         new AsyncTask<String, Void, JSONObject>() {
             @Override
             protected JSONObject doInBackground(String... elements) {
@@ -135,6 +151,21 @@ public class UpdateItinerary extends Activity {
                 }
                 return null;
             }
+
+            @Override
+            protected void onPostExecute(JSONObject responseData) {
+                CharSequence text = "Itinerary deleted!";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+                Intent intent = new Intent(UpdateItinerary.this, ViewItineraries.class);
+                intent.putExtra("sub", final_sub);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                finish();
+                UpdateItinerary.this.startActivity(intent);
+            }
+
+
 
         }.execute();
     }
@@ -156,28 +187,17 @@ public class UpdateItinerary extends Activity {
         //posts data
         patch("itinerary/"+this.id,joItinerary.toString());
 
-        CharSequence text = "Itinerary updated!";
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(this, text, duration);
-        toast.show();
 
-        Intent intent = new Intent(UpdateItinerary.this, ViewItineraries.class);
-        intent.putExtra("sub", this.sub);
-        UpdateItinerary.this.startActivity(intent);
+
+
 
     }
     public void delete_itinerary(View button) throws JSONException, IOException {
         //posts data
         delete("itinerary/"+this.id);
 
-        CharSequence text = "Itinerary deleted!";
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(this, text, duration);
-        toast.show();
-        Intent intent = new Intent(UpdateItinerary.this, ViewItineraries.class);
-        intent.putExtra("sub", this.sub);
 
-        UpdateItinerary.this.startActivity(intent);
+
 
     }
 
