@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.samuelhudson.finalproject">
+    package="com.risestack.itinerary">
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
@@ -15,7 +15,30 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="com.risestack.itinerary.HANDLE_AUTHORIZATION_RESPONSE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
+        <activity android:name="net.openid.appauth.RedirectUriReceiverActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="com.risestack.itinerary" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".CreateItinerary"
+            android:label="@string/title_activity_create_itinerary"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewItineraries"
+            android:label="@string/title_activity_view_itineraries"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

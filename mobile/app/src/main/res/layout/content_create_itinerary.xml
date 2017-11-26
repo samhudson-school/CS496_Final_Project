@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.risestack.itinerary.CreateItinerary"
+    tools:showIn="@layout/activity_create_itinerary">
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/sub_key"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/action_margin"
+        android:layout_marginRight="@dimen/action_margin"
+        />
+
+
+</android.support.constraint.ConstraintLayout>

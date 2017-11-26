@@ -1,3 +1,32 @@
 <resources>
-    <string name="app_name">FinalProject</string>
+    <string name="app_name">Itinerary</string>
+    <string name="heading_message">Welcome to Itinerary. An App that lets you create custom Itineraries.</string>
+    <string name="make_api_call">Make API Call</string>
+    <string name="make_authorization_request">Sign In With Google</string>
+    <string name="create_itinerary">Create Itinerary</string>
+    <string name="view_itineraries">View Itineraries</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="request_complete">API Call Successful.</string>
+    <string name="request_failed">API Call Failed.</string>
+
+    <!-- Create Itinerary -->
+    <string name="textEntry_name">name</string>
+    <string name="textEntry_street">street</string>
+    <string name="textEntry_city">city</string>
+    <string name="textEntry_zip">zip</string>
+    <string name="textEntry_duration_of_stay">duration_of_stay</string>
+    <string name="textEntry_submit">Submit</string>
+
+    <!-- tools -->
+    <string name="tools_given_name">Some FirstName</string>
+    <string name="tools_family_name">LastName</string>
+    <string name="tools_full_name">Some FirstName LastName</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_create_itinerary">CreateItinerary</string>
+    <string name="title_activity_view_itineraries">ViewItineraries</string>
 </resources>
